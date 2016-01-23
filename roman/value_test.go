@@ -10,87 +10,38 @@ func TestSomething(t *testing.T) {
 	}
 }
 
-func TestCreateNumeralFromIntegerWhenOne(t *testing.T) {
-	n, err := NewNumeral(1)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "I" {
-		t.Fatalf("string representation should be I, was %s", n.value)
+var integerToNumeralTests = []struct {
+	integer int
+	numeral string
+}{
+	{1, "I"},
+	{2, "II"},
+	{4, "IV"},
+	{5, "V"},
+	{6, "VI"},
+	{10, "X"},
+	{50, "L"},
+	{100, "C"},
+	{257, "CCLVII"},
+	{500, "D"},
+	{1000, "M"},
+	{2000, "MM"},
+	{2257, "MMCCLVII"},
+}
+
+func TestConvertIntegerToNumeral(t *testing.T) {
+	for _, example := range integerToNumeralTests {
+		n, err := NewNumeral(example.integer)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if n.value != example.numeral {
+			t.Fatalf("string representation should be %s, was %s", example.numeral, n.value)
+		}
 	}
 }
 
-func TestCreateNumeralFromIntegerWhenFive(t *testing.T) {
-	n, err := NewNumeral(5)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "V" {
-		t.Fatalf("string representation should be V, was %s", n.value)
-	}
-}
-
-func TestCreateNumeralFromIntegerWhenTen(t *testing.T) {
-	n, err := NewNumeral(10)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "X" {
-		t.Fatalf("string representation should be X, was %s", n.value)
-	}
-}
-
-func TestCreateNumeralFromIntegerWhenFifty(t *testing.T) {
-	n, err := NewNumeral(50)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "L" {
-		t.Fatalf("string representation should be L, was %s", n.value)
-	}
-}
-
-func TestCreateNumeralFromIntegerWhenHundred(t *testing.T) {
-	n, err := NewNumeral(100)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "C" {
-		t.Fatalf("string representation should be C, was %s", n.value)
-	}
-}
-
-func TestCreateNumeralFromIntegerWhen257(t *testing.T) {
-	n, err := NewNumeral(257)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "CCLVII" {
-		t.Fatalf("string representation should be CCLVII, was %s", n.value)
-	}
-}
-
-func TestCreateNumeralFromIntegerWhen4(t *testing.T) {
-	n, err := NewNumeral(4)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "IIII" {
-		t.Fatalf("string representation should be CCLVII, was %s", n.value)
-	}
-}
-
-func TestCreateNumeralFromString(t *testing.T) {
-	n, err := NewNumeral("I")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if n.value != "I" {
-		t.Fatalf("string representation should be I, was %s", n.value)
-	}
-}
-
-func TestCreateNumeralWithInvalidString(t *testing.T) {
+func TestShouldntAcceptInvalidString(t *testing.T) {
 	_, err := NewNumeral("A")
 	if err == nil {
 		t.Fatal("We expected an error with A")
@@ -118,12 +69,5 @@ func TestShouldCompareTwoNumeralsAsNotSame(t *testing.T) {
 	b, _ := NewNumeral("X")
 	if a.SameValueAs(b) == true {
 		t.Fatal("Shouldn't be same value")
-	}
-}
-
-func TestShouldParseTwo(t *testing.T) {
-	v, _ := NewNumeral(2)
-	if v.value != "II" {
-		t.Fatalf("Unexpected string value %s, want %s", v.value, "II")
 	}
 }

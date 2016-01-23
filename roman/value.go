@@ -11,23 +11,20 @@ type Numeral struct {
 }
 
 var lookup = map[string]uint{
-	"I": 1,
-	"V": 5,
-	"X": 10,
-	"L": 50,
-	"C": 100,
-	"D": 500,
-	"M": 1000,
+	"I":  1,
+	"IV": 4,
+	"V":  5,
+	"X":  10,
+	"L":  50,
+	"C":  100,
+	"D":  500,
+	"M":  1000,
 }
 
-var order = []string{"M", "D", "C", "L", "X", "V", "I"}
+var order = []string{"M", "D", "C", "L", "X", "V", "IV", "I"}
 
 func pattern() *regexp.Regexp {
-	var pattern string
-	for k := range lookup {
-		pattern += k
-	}
-	return regexp.MustCompile("[" + pattern + "]+")
+	return regexp.MustCompile("[MDCLXVI]+")
 }
 
 func NewNumeral(v interface{}) (Numeral, error) {
