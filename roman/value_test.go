@@ -2,14 +2,6 @@ package roman
 
 import "testing"
 
-func TestSomething(t *testing.T) {
-	var n Numeral
-
-	if n.value != "" {
-		t.Errorf("something went wrong")
-	}
-}
-
 var integerToNumeralTests = []struct {
 	integer int
 	numeral string
@@ -35,7 +27,7 @@ func TestConvertIntegerToNumeral(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if n.value != example.numeral {
+		if n.GetValue() != example.numeral {
 			t.Fatalf("string representation should be %s, was %s", example.numeral, n.value)
 		}
 	}

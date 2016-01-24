@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+type ValueObject interface {
+	GetValue() string
+	SameValueAs(value interface{}) bool
+}
+
 type Numeral struct {
 	value string
 }
@@ -36,29 +41,33 @@ func NewNumeral(v interface{}) (Numeral, error) {
 		}
 		n.value = t
 	case uint:
-		n.value = Itoa(t)
+		n.value = itoa(t)
 	case int:
 		if t < 0 {
 			return n, errors.New("can not represent negative numbers")
 		}
-		n.value = Itoa(uint(t))
+		n.value = itoa(uint(t))
 	}
 
 	return n, nil
 }
 
-func (n Numeral) SameValueAs(nn Numeral) bool {
-	return n.value == nn.value
+func (n Numeral) GetValue() string {
+	return n.value
 }
 
-func Itoa(in uint) string {
+func (n Numeral) SameValueAs(value interface{}) bool {
+	otherNumeral, ok := value.(Numeral)
+	return ok && n.GetValue() == otherNumeral.GetValue()
+}
+
+func itoa(in uint) string {
 	remainder := in
 	acc := ""
 
 	for _, k := range order {
 		currentVal := lookup[k]
 		c := remainder / currentVal
-		// fmt.Printf("%v / %v = %v\n", remainder, currentVal, c)
 		acc += strings.Repeat(k, int(c))
 		remainder = remainder - (c * currentVal)
 	}
