@@ -27,7 +27,7 @@ func TestConvertIntegerToNumeral(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if n.GetValue() != example.numeral {
+		if n.GetStringValue() != example.numeral {
 			t.Fatalf("string representation should be %s, was %s", example.numeral, n.value)
 		}
 	}

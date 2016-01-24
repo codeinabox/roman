@@ -7,8 +7,8 @@ import (
 )
 
 type ValueObject interface {
-	GetValue() string
-	SameValueAs(value interface{}) bool
+	GetStringValue() string
+	SameValueAs(value ValueObject) bool
 }
 
 type Numeral struct {
@@ -52,13 +52,13 @@ func NewNumeral(v interface{}) (Numeral, error) {
 	return n, nil
 }
 
-func (n Numeral) GetValue() string {
+func (n Numeral) GetStringValue() string {
 	return n.value
 }
 
-func (n Numeral) SameValueAs(value interface{}) bool {
+func (n Numeral) SameValueAs(value ValueObject) bool {
 	otherNumeral, ok := value.(Numeral)
-	return ok && n.GetValue() == otherNumeral.GetValue()
+	return ok && n.value == otherNumeral.value
 }
 
 func itoa(in uint) string {
