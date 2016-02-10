@@ -27,7 +27,7 @@ func TestConvertIntegerToNumeral(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if n.GetStringValue() != example.numeral {
+		if n.String() != example.numeral {
 			t.Fatalf("string representation should be %s, was %s", example.numeral, n.value)
 		}
 	}
@@ -43,7 +43,7 @@ func TestShouldntAcceptInvalidString(t *testing.T) {
 func TestShouldBeSameIfSameNumeral(t *testing.T) {
 	a, _ := NewNumeral("I")
 	b, _ := NewNumeral("I")
-	if a.SameValueAs(b) == false {
+	if a.Equals(b) == false {
 		t.Fatal("Not same value as")
 	}
 }
@@ -51,7 +51,7 @@ func TestShouldBeSameIfSameNumeral(t *testing.T) {
 func TestShouldBeSameIfIntegerEquivalent(t *testing.T) {
 	a, _ := NewNumeral(5)
 	b, _ := NewNumeral("V")
-	if a.SameValueAs(b) == false {
+	if a.Equals(b) == false {
 		t.Fatal("Not same value as")
 	}
 }
@@ -59,7 +59,7 @@ func TestShouldBeSameIfIntegerEquivalent(t *testing.T) {
 func TestShouldCompareTwoNumeralsAsNotSame(t *testing.T) {
 	a, _ := NewNumeral("I")
 	b, _ := NewNumeral("X")
-	if a.SameValueAs(b) == true {
+	if a.Equals(b) == true {
 		t.Fatal("Shouldn't be same value")
 	}
 }
