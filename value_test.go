@@ -1,6 +1,9 @@
-package roman
+package roman_test
 
-import "testing"
+import (
+	"github.com/codeinabox/roman"
+	"testing"
+)
 
 var integerToNumeralTests = []struct {
 	integer int
@@ -23,42 +26,42 @@ var integerToNumeralTests = []struct {
 
 func TestConvertIntegerToNumeral(t *testing.T) {
 	for _, example := range integerToNumeralTests {
-		n, err := NewNumeral(example.integer)
+		n, err := roman.NewNumeral(example.integer)
 		if err != nil {
 			t.Fatal(err)
 		}
 		if n.String() != example.numeral {
-			t.Fatalf("string representation should be %s, was %s", example.numeral, n.value)
+			t.Fatalf("string representation should be %s, was %s", example.numeral, n.String())
 		}
 	}
 }
 
 func TestShouldntAcceptInvalidString(t *testing.T) {
-	_, err := NewNumeral("A")
+	_, err := roman.NewNumeral("B")
 	if err == nil {
 		t.Fatal("We expected an error with A")
 	}
 }
 
 func TestShouldBeSameIfSameNumeral(t *testing.T) {
-	a, _ := NewNumeral("I")
-	b, _ := NewNumeral("I")
+	a, _ := roman.NewNumeral("I")
+	b, _ := roman.NewNumeral("I")
 	if a.Equals(b) == false {
 		t.Fatal("Not same value as")
 	}
 }
 
 func TestShouldBeSameIfIntegerEquivalent(t *testing.T) {
-	a, _ := NewNumeral(5)
-	b, _ := NewNumeral("V")
+	a, _ := roman.NewNumeral(5)
+	b, _ := roman.NewNumeral("V")
 	if a.Equals(b) == false {
 		t.Fatal("Not same value as")
 	}
 }
 
 func TestShouldCompareTwoNumeralsAsNotSame(t *testing.T) {
-	a, _ := NewNumeral("I")
-	b, _ := NewNumeral("X")
+	a, _ := roman.NewNumeral("I")
+	b, _ := roman.NewNumeral("X")
 	if a.Equals(b) == true {
 		t.Fatal("Shouldn't be same value")
 	}
