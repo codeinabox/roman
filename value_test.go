@@ -24,6 +24,19 @@ var integerToNumeralTests = []struct {
 	{2257, "MMCCLVII"},
 }
 
+// Create a different type of value object used in Equals() check
+type NotNumeral struct {
+	value string
+}
+
+func (n NotNumeral) String() string {
+	return n.value
+}
+
+func (n NotNumeral) Equals(value roman.Value) bool {
+	return false
+}
+
 func TestConvertIntegerToNumeral(t *testing.T) {
 	for _, example := range integerToNumeralTests {
 		n, err := roman.NewNumeral(example.integer)
@@ -43,7 +56,16 @@ func TestShouldntAcceptInvalidString(t *testing.T) {
 	}
 }
 
-func TestShouldBeSameIfSameNumeral(t *testing.T) {
+func TestShouldNotBeEqualIfNotNumeral(t *testing.T) {
+	var notNumeral NotNumeral
+	numeral, _ := roman.NewNumeral("I")
+
+	if numeral.Equals(notNumeral) == true {
+		t.Fatal("Different value object types can not be equal")
+	}
+}
+
+func TestShouldBeEqualIfSameNumeral(t *testing.T) {
 	a, _ := roman.NewNumeral("I")
 	b, _ := roman.NewNumeral("I")
 	if a.Equals(b) == false {
@@ -51,7 +73,7 @@ func TestShouldBeSameIfSameNumeral(t *testing.T) {
 	}
 }
 
-func TestShouldBeSameIfIntegerEquivalent(t *testing.T) {
+func TestShouldBeEqualIfIntegerEquivalent(t *testing.T) {
 	a, _ := roman.NewNumeral(5)
 	b, _ := roman.NewNumeral("V")
 	if a.Equals(b) == false {
@@ -59,7 +81,7 @@ func TestShouldBeSameIfIntegerEquivalent(t *testing.T) {
 	}
 }
 
-func TestShouldCompareTwoNumeralsAsNotSame(t *testing.T) {
+func TestShouldCompareTwoNumeralsAsNotEqual(t *testing.T) {
 	a, _ := roman.NewNumeral("I")
 	b, _ := roman.NewNumeral("X")
 	if a.Equals(b) == true {
