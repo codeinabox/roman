@@ -1,6 +1,7 @@
 package roman_test
 
 import (
+	"fmt"
 	"github.com/codeinabox/roman"
 	"testing"
 )
@@ -37,6 +38,12 @@ func (n NotNumeral) Equals(value roman.Value) bool {
 	return false
 }
 
+func ExampleString_Numeral() {
+	numeral, _ := roman.NewNumeral(5)
+	fmt.Println(numeral.String())
+	// Output: V
+}
+
 func TestConvertIntegerToNumeral(t *testing.T) {
 	for _, example := range integerToNumeralTests {
 		n, err := roman.NewNumeral(example.integer)
@@ -54,6 +61,14 @@ func TestShouldntAcceptInvalidString(t *testing.T) {
 	if err == nil {
 		t.Fatal("We expected an error with A")
 	}
+}
+
+func ExampleEquals_Numeral() {
+	a, _ := roman.NewNumeral(5)
+	b, _ := roman.NewNumeral("V")
+
+	fmt.Println(a.Equals(b))
+	// Output: true
 }
 
 func TestShouldNotBeEqualIfNotNumeral(t *testing.T) {
